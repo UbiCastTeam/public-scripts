@@ -1,0 +1,14 @@
+stages:
+  - check
+
+lint:
+  stage: check
+  image: registry.ubicast.net/docker/flake8:latest
+  script:
+    - make lint_local
+
+deadcode:
+  stage: check
+  image: registry.ubicast.net/docker/vulture:latest
+  script:
+    - make deadcode_local
