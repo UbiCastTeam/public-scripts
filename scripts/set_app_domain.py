@@ -8,6 +8,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 
 
 UNIX_USER_PATTERN = r'[a-z0-9\-]+'
@@ -111,6 +112,9 @@ by using this format: "ms-<instance name>" (for example "ms-msuser").''')
     else:
         log('Reloading Nginx.')
         subprocess.run(['systemctl', 'reload', 'nginx'], check=True)
+
+    # Wait for reloads (Nginx & application) to be effective
+    time.sleep(3)
 
     log('\033[92mDone\033[0m')
     if warning:
