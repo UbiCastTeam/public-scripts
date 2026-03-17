@@ -51,18 +51,24 @@ by using this format: "ms-<instance name>" (for example "ms-msuser").''')
     # Get files to change
     if args.app == 'mon':
         paths = [
-            Path('/etc/webmonitor/install.ini'),
-            Path('/etc/nginx/sites-available/webmonitor.conf'),
+            Path('/etc/ubicast-webmonitor/install.ini'),
+            Path('/etc/webmonitor/install.ini'),  # Old path
+            Path('/etc/nginx/sites-available/ubicast-webmonitor.conf'),
+            Path('/etc/nginx/sites-available/webmonitor.conf'),  # Old path
             Path('/etc/nginx/sites-available/msmonitor.conf'),  # Old path
-            Path('/home/webmonitor/webmonitor/private/settings_override.py'),
+            Path('/var/lib/ubicast-webmonitor/private/settings_override.py'),
+            Path('/home/webmonitor/webmonitor/private/settings_override.py'),  # Old path
             Path('/home/msmonitor/msmonitor/data/settings_override.py'),  # Old path
         ]
         warning = None
     elif args.app == 'mm':
         paths = [
-            Path('/etc/skyreach/install.ini'),
-            Path('/etc/nginx/sites-available/skyreach.conf'),
-            Path('/home/skyreach/skyreach_data/private/settings_override.py'),
+            Path('/etc/ubicast-skyreach/install.ini'),
+            Path('/etc/skyreach/install.ini'),  # Old path
+            Path('/etc/nginx/sites-available/ubicast-skyreach.conf'),
+            Path('/etc/nginx/sites-available/skyreach.conf'),  # Old path
+            Path('/var/lib/ubicast-skyreach/private/settings_override.py'),
+            Path('/home/skyreach/skyreach_data/private/settings_override.py'),  # Old path
         ]
         warning = '''Some steps to change the domain should be done manually:
         - Change the url of Miris Manager in the related Nudgis.'''
@@ -75,14 +81,17 @@ by using this format: "ms-<instance name>" (for example "ms-msuser").''')
         else:
             instance = 'msuser'
         paths = [
-            Path(f'/etc/nginx/sites-available/mediaserver-{instance}.conf'),
-            Path(f'/home/{instance}/msinstance/conf/mssettings.py'),
-            Path('/etc/celerity/config.py'),
+            Path(f'/etc/nginx/sites-available/ubicast-mediaserver_{instance}.conf'),
+            Path(f'/etc/nginx/sites-available/mediaserver-{instance}.conf'),  # Old path
+            Path(f'/var/lib/ubicast-mediaserver/portals/{instance}/private/mssettings.py'),
+            Path(f'/home/{instance}/msinstance/conf/mssettings.py'),  # Old path
+            Path('/etc/ubicast-celerity/config.py'),
+            Path('/etc/celerity/config.py'),  # Old path
         ]
         warning = f'''Some steps to change the domain should be done manually:
-        - Change the domain in configuration file "/etc/celerity/config.py" of Celerity server and workers.
+        - Change the domain in configuration file "/etc/ubicast-celerity/config.py" of Celerity server and workers.
           Command to use:
-                sed -i 's/{old_domain}/{new_domain}/g' /etc/celerity/config.py
+                sed -i 's/{old_domain}/{new_domain}/g' /etc/*celerity/config.py
         - Change the domain used in Miris Manager systems configuration.'''
     else:
         log('Invalid app name requested.')
